@@ -5,8 +5,9 @@ import './App.css';
 import * as api from './services/api';
 import Cart from './components/Cart';
 
+
 function App() {
-  console.log(api.getProductsFromCategoryAndQuery());
+  console.log('resultadogetProductsAndQueryAPP', api.getProductsFromCategoryAndQuery());
   return (
     <BrowserRouter>
       <Switch>
