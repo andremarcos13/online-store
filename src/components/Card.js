@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
 class Card extends Component {
+  saveButton = () => {
+    console.log('salvei');
+  }
+
   render() {
     const { listaDeProdutos } = this.props;
     return (
@@ -15,6 +19,15 @@ class Card extends Component {
             <p>
               {`R$ ${produto.price}`}
             </p>
+            {/* INSERIR BOTÃO */}
+            <button
+              type="button"
+              data-testid="product-add-to-cart"
+              onClick={ this.saveButton }
+            >
+              Adicionar ao carrinho
+            </button>
+            {/* FINALIZA INSERIR BOTÃO */}
           </div>))}
       </div>
     );
