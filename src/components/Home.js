@@ -17,7 +17,6 @@ class Home extends Component {
     this.setState({
       valorPesquisa: target.value,
     });
-    // console.log('input', this.state.valorPesquisa);
   }
 
   handleClick = async () => {
