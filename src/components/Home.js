@@ -102,6 +102,12 @@ class Home extends Component {
               <p>
                 {`R$ ${produtos.price}`}
               </p>
+              <Link
+                data-testid="product-detail-link"
+                to={ { pathname: `/details/${produtos.id}` } }
+              >
+                Detalhes do Produto
+              </Link>
               {/* INSERIR BOTÃO */}
               <button
                 type="button"

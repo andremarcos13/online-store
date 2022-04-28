@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Card extends Component {
   saveButton = () => {
@@ -28,6 +29,12 @@ class Card extends Component {
               Adicionar ao carrinho
             </button>
             {/* FINALIZA INSERIR BOTÃO */}
+            <Link
+              data-testid="product-detail-link"
+              to={ { pathname: `/details/${produto.id}` } }
+            >
+              Detalhes do Produto
+            </Link>
           </div>))}
       </div>
     );
