@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import * as api from '../services/api';
 
 class Categorias extends Component {
@@ -52,6 +53,12 @@ class Categorias extends Component {
             <p>
               {`R$ ${produtos.price}`}
             </p>
+            <Link
+              data-testid="product-detail-link"
+              to={ { pathname: `/details/${produtos.id}` } }
+            >
+              Detalhes do Produto
+            </Link>
           </div>
         ))}
       </div>
