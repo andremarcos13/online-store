@@ -3,6 +3,10 @@ import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Card extends Component {
+  saveButton = () => {
+    console.log('salvei');
+  }
+
   render() {
     const { listaDeProdutos } = this.props;
     return (
@@ -16,6 +20,15 @@ class Card extends Component {
             <p>
               {`R$ ${produto.price}`}
             </p>
+            {/* INSERIR BOTÃO */}
+            <button
+              type="button"
+              data-testid="product-add-to-cart"
+              onClick={ this.saveButton }
+            >
+              Adicionar ao carrinho
+            </button>
+            {/* FINALIZA INSERIR BOTÃO */}
             <Link
               data-testid="product-detail-link"
               to={ { pathname: `/details/${produto.id}` } }
