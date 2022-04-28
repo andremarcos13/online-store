@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Categorias from './Categorias';
 import Card from './Card';
 import * as api from '../services/api';
 
@@ -10,7 +9,28 @@ class Home extends Component {
     this.state = {
       valorPesquisa: '',
       listaDeProdutos: [],
+      cart: [],
+      categorias: [],
+      categories: [],
     };
+  }
+
+  componentDidMount = () => {
+    this.retornoGet();
+  }
+
+  retornoGet = async () => {
+    const renderiza = await api.getCategories();
+    this.setState({
+      categorias: renderiza,
+    });
+  }
+
+  retornoCategory = async ({ target }) => {
+    const category = await api.getProductsFromCategory(target.id);
+    this.setState({
+      categories: category.results,
+    });
   }
 
   handleInput = ({ target }) => {
@@ -25,11 +45,24 @@ class Home extends Component {
     this.setState({
       listaDeProdutos: retornoFunc.results,
     });
-    console.log(retornoFunc.results);
+  }
+
+  saveButton = async ({ target }) => {
+    const { categories } = this.state;
+    const itemsCart = categories.find((el) => el.id === target.name);
+    itemsCart.qtd = (itemsCart.qtd || 0) + 1;
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, itemsCart],
+    }));
   }
 
   render() {
-    const { valorPesquisa, listaDeProdutos } = this.state;
+    const { valorPesquisa, listaDeProdutos, categorias, categories, cart } = this.state;
+    const location = {
+      pathname: '/cart',
+      prop: cart,
+    };
+
     return (
       <div>
         <input
@@ -49,8 +82,47 @@ class Home extends Component {
           Buscar
 
         </button>
-        <Link data-testid="shopping-cart-button" to="/cart">Carrinho de Compras</Link>
-        <Categorias />
+        <div>
+          { categorias.map((categoria) => (
+            <button
+              data-testid="category"
+              type="button"
+              key={ categoria.name }
+              id={ categoria.id }
+              onClick={ this.retornoCategory }
+            >
+              {categoria.name}
+            </button>))}
+          { categories.map((produtos) => (
+            <div key={ produtos.id } data-testid="product">
+              <p>
+                {produtos.title}
+              </p>
+              <img alt={ produtos.title } src={ produtos.thumbnail } />
+              <p>
+                {`R$ ${produtos.price}`}
+              </p>
+              {/* INSERIR BOTÃO */}
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ this.saveButton }
+                name={ produtos.id }
+              >
+                Adicionar ao carrinho
+              </button>
+              {/* FINALIZA INSERIR BOTÃO */}
+
+            </div>
+          ))}
+        </div>
+        <Link
+          data-testid="shopping-cart-button"
+          to={ location }
+        >
+          Carrinho de Compras
+
+        </Link>
         <Card listaDeProdutos={ listaDeProdutos } />
       </div>
     );
