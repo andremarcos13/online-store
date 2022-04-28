@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import * as api from '../services/api';
-// import { getCategories } from '../services/api';
 
 class Categorias extends Component {
   constructor() {
     super();
     this.state = {
       categorias: [],
+      categories: [],
     };
   }
 
@@ -20,11 +20,17 @@ class Categorias extends Component {
     this.setState({
       categorias: renderiza,
     });
-  // api.getCategories().then(categories => { console.log(categories) })
+  }
+
+  retornoCategory = async ({ target }) => {
+    const category = await api.getProductsFromCategory(target.id);
+    this.setState({
+      categories: category.results,
+    });
   }
 
   render() {
-    const { categorias } = this.state;
+    const { categorias, categories } = this.state;
     return (
       <div>
         { categorias.map((categoria) => (
@@ -32,9 +38,22 @@ class Categorias extends Component {
             data-testid="category"
             type="button"
             key={ categoria.name }
+            id={ categoria.id }
+            onClick={ this.retornoCategory }
           >
             {categoria.name}
           </button>))}
+        { categories.map((produtos) => (
+          <div key={ produtos.id } data-testid="product">
+            <p>
+              {produtos.title}
+            </p>
+            <img alt={ produtos.title } src={ produtos.thumbnail } />
+            <p>
+              {`R$ ${produtos.price}`}
+            </p>
+          </div>
+        ))}
       </div>
     );
   }
