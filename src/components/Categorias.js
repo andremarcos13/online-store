@@ -29,6 +29,10 @@ class Categorias extends Component {
     });
   }
 
+  saveButton = () => {
+    console.log('salvei');
+  }
+
   render() {
     const { categorias, categories } = this.state;
     return (
@@ -52,6 +56,16 @@ class Categorias extends Component {
             <p>
               {`R$ ${produtos.price}`}
             </p>
+            {/* INSERIR BOTÃO */}
+            <button
+              type="button"
+              data-testid="product-add-to-cart"
+              onClick={ this.saveButton }
+            >
+              Adicionar ao carrinho
+            </button>
+            {/* FINALIZA INSERIR BOTÃO */}
+
           </div>
         ))}
       </div>
