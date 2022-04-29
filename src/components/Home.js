@@ -115,7 +115,6 @@ class Home extends Component {
               >
                 Detalhes do Produto
               </Link>
-              {/* INSERIR BOTÃO */}
               <button
                 type="button"
                 data-testid="product-add-to-cart"
@@ -124,8 +123,6 @@ class Home extends Component {
               >
                 Adicionar ao carrinho
               </button>
-              {/* FINALIZA INSERIR BOTÃO */}
-
             </div>
           ))}
         </div>
