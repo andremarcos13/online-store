@@ -8,15 +8,11 @@ class Details extends Component {
     super();
     this.state = {
       details: [],
-      // cart: [],
     };
   }
 
   componentDidMount = () => {
     this.showDetails();
-    // const teste = [];
-    // teste.push(JSON.parse(localStorage.getItem('cartItems')));
-    // localStorage.setItem('cartItems', JSON.stringify(teste));
   };
 
   showDetails = async () => {

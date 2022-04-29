@@ -25,7 +25,6 @@ class Card extends Component {
             <p>
               {`R$ ${produto.price}`}
             </p>
-            {/* INSERIR BOTÃO */}
             <button
               type="button"
               data-testid="product-add-to-cart"
@@ -34,7 +33,6 @@ class Card extends Component {
             >
               Adicionar ao carrinho
             </button>
-            {/* FINALIZA INSERIR BOTÃO */}
             <Link
               data-testid="product-detail-link"
               to={ { pathname: `/details/${produto.id}` } }
@@ -48,7 +46,7 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-  listaDeProdutos: propTypes.shape.isRequired,
+  listaDeProdutos: propTypes.arrayOf(propTypes.shape).isRequired,
 };
 
 export default Card;
