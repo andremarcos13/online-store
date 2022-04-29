@@ -51,9 +51,9 @@ class Home extends Component {
     const { categories } = this.state;
     const itemsCart = categories.find((el) => el.id === target.name);
     itemsCart.qtd = (itemsCart.qtd || 0) + 1;
-    this.setState((prevState) => ({
-      cart: [...prevState.cart, itemsCart],
-    }));
+    const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
+    storageReturn.push(itemsCart);
+    localStorage.setItem('cartItems', JSON.stringify(storageReturn));
   }
 
   render() {
@@ -82,6 +82,13 @@ class Home extends Component {
           Buscar
 
         </button>
+        <Link
+          data-testid="shopping-cart-button"
+          to={ location }
+        >
+          Carrinho de Compras
+
+        </Link>
         <div>
           { categorias.map((categoria) => (
             <button
@@ -104,7 +111,7 @@ class Home extends Component {
               </p>
               <Link
                 data-testid="product-detail-link"
-                to={ { pathname: `/details/${produtos.id}` } }
+                to={ { pathname: `/details/${produtos.id}`, state: { param1: cart } } }
               >
                 Detalhes do Produto
               </Link>
@@ -122,13 +129,6 @@ class Home extends Component {
             </div>
           ))}
         </div>
-        <Link
-          data-testid="shopping-cart-button"
-          to={ location }
-        >
-          Carrinho de Compras
-
-        </Link>
         <Card listaDeProdutos={ listaDeProdutos } />
       </div>
     );

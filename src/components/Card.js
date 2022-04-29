@@ -3,8 +3,13 @@ import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Card extends Component {
-  saveButton = () => {
-    console.log('salvei');
+  saveButton = ({ target }) => {
+    const { listaDeProdutos } = this.props;
+    const itemsCart = listaDeProdutos.find((el) => el.id === target.name);
+    itemsCart.qtd = (itemsCart.qtd || 0) + 1;
+    const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
+    storageReturn.push(itemsCart);
+    localStorage.setItem('cartItems', JSON.stringify(storageReturn));
   }
 
   render() {
@@ -25,6 +30,7 @@ class Card extends Component {
               type="button"
               data-testid="product-add-to-cart"
               onClick={ this.saveButton }
+              name={ produto.id }
             >
               Adicionar ao carrinho
             </button>
