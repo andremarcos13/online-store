@@ -49,11 +49,28 @@ class Details extends Component {
   } */
 
   handleChange = ({ target }) => {
-    const { value } = target;
     const { name } = target;
+    const checkInputType = target.type === 'radio' ? target.id : target.value;
     this.setState({
-      [name]: value,
+      [name]: checkInputType,
     });
+    const {
+      match: {
+        params: { id },
+      },
+    } = this.props;
+    const { avalia, avaliacao, email } = this.state;
+    const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
+    avaliacoes.push({
+      // desestrutura e usa shorthand porque dei mesmo nome
+      id,
+      avalia,
+      avaliacao,
+      email,
+    });
+    localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
+    // Aqui usa o json string e o outro pois precisa ser string salva no array
+    // salvamos estes dados num objeto e salvamos no local storage, inicia vazio, depois push adiciona
   }
 
   render() {
@@ -110,6 +127,7 @@ class Details extends Component {
             <label htmlFor="1">
               1
               <input
+                type="radio"
                 data-testid="1-rating"
                 id="1"
                 value={ avalia }
