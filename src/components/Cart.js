@@ -3,8 +3,8 @@ import propTypes from 'prop-types';
 
 class Cart extends Component {
   render() {
-    const { location: { prop } } = this.props;
-    console.log('prop', prop);
+    // const { location: { prop } } = this.props;
+    // console.log('prop', prop);
     const storage = JSON.parse(localStorage.getItem('cartItems'));
     return (
       <div className="cart-component">

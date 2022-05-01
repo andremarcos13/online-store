@@ -27,11 +27,11 @@ class Details extends Component {
       },
     } = this.props;
     const retorno = await api.getProductById(id);
-    console.log('retornoId', retorno);
+    // console.log('retornoId', retorno);
     this.setState({
       details: retorno,
     });
-  }
+  };
 
   saveButton = () => {
     const { details } = this.state;
@@ -39,7 +39,7 @@ class Details extends Component {
     const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
     storageReturn.push(details);
     localStorage.setItem('cartItems', JSON.stringify(storageReturn));
-  }
+  };
 
   handleChange = ({ target }) => {
     const { name } = target;
@@ -47,10 +47,11 @@ class Details extends Component {
     this.setState({
       [name]: checkInputType,
     });
-  }
+  };
 
-  handleSaveButton = (event) => { // funcao removida do onChange
-    event.preventDefault();
+  handleSaveButton = () => {
+    // funcao removida do onChange
+    // remover event.preventDefault();
     const {
       match: {
         params: { id },
@@ -66,10 +67,17 @@ class Details extends Component {
       email,
     });
     localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
-    window.location.reload(); // força atualizar pagina e limpar formulario
+    // limpar avalia, avaliacao, email
+    this.setState({
+      email: '',
+      avaliacao: '',
+      avalia: '', // alterado estado inicial para ''
+    });
+    this.loadAvaliation();
+    // remover window.location.reload(); // força atualizar pagina e limpar formulario
     // Aqui usa o json string e o outro pois precisa ser string salva no array
     // salvamos estes dados num objeto e salvamos no local storage, inicia vazio, depois push adiciona
-  }
+  };
 
   loadAvaliation = () => {
     const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || []; // carrega dados do localStorage
@@ -82,7 +90,7 @@ class Details extends Component {
     this.setState({
       filtrarAvaliacao: verificaID,
     });
-  }
+  };
 
   render() {
     const { details, email, avaliacao, avalia, filtrarAvaliacao } = this.state;
@@ -90,20 +98,13 @@ class Details extends Component {
       <div>
         <p>Detalhes</p>
 
-        <Link
-          data-testid="shopping-cart-button"
-          to="/cart"
-        >
+        <Link data-testid="shopping-cart-button" to="/cart">
           Carrinho de Compras
         </Link>
         <div key={ details.id }>
-          <p data-testid="product-detail-name">
-            { details.title }
-          </p>
+          <p data-testid="product-detail-name">{details.title}</p>
           <img alt={ details.title } src={ details.thumbnail } />
-          <p>
-            { `R$ ${details.price}` }
-          </p>
+          <p>{`R$ ${details.price}`}</p>
           <button
             type="button"
             data-testid="product-detail-add-to-cart"
@@ -113,7 +114,7 @@ class Details extends Component {
             Adicionar ao carrinho
           </button>
         </div>
-        <form onSubmit={ this.handleSaveButton }>
+        <form>
           <input
             placeholder="Email"
             type="email"
@@ -193,21 +194,34 @@ class Details extends Component {
           </div>
           <div>
             <button
-              type="submit"
+              type="button"
               data-testid="submit-review-btn"
+              onClick={ this.handleSaveButton }
             >
               Avaliar
             </button>
           </div>
         </form>
         <div>
-          { filtrarAvaliacao.map((elem, index) => ( // renderiza avaliação do produto filtrado
-            <ul key={ index }>
-              <p>
-                {`Email: ${elem.email} Comentário:${elem.avaliacao} Nota:${elem.avalia}`}
-              </p>
-            </ul>
-          ))}
+          <ul>
+            {filtrarAvaliacao.map(
+              (
+                elem,
+                index, // renderiza avaliação do produto filtrado
+              ) => (
+                <li key={ index }>
+                  <p>
+                    Email:
+                    <span>{elem.email}</span>
+                    Comentário:
+                    <span>{elem.avaliacao}</span>
+                    Nota:
+                    <span>{elem.avalia}</span>
+                  </p>
+                </li>
+              ),
+            )}
+          </ul>
         </div>
       </div>
     );
