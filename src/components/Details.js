@@ -10,12 +10,14 @@ class Details extends Component {
       details: [],
       email: '',
       avaliacao: '',
-      avalia: 1, // aqui estamos em dúvida sobre como guardar o valor dos radios;
+      avalia: '', // alterado estado inicial para ''
+      filtrarAvaliacao: [], // criado estado para renderizacao
     };
   }
 
   componentDidMount = () => {
     this.showDetails();
+    this.loadAvaliation(); // carrega avaliacoes somente do produdo filtrado assim que monta o componente
   };
 
   showDetails = async () => {
@@ -39,21 +41,16 @@ class Details extends Component {
     localStorage.setItem('cartItems', JSON.stringify(storageReturn));
   }
 
-  /*  addComent = () => {
-    const { } = this.props;
-    const itemsCart = listaDeProdutos.find((el) => el.id === target.name);
-    itemsCart.qtd = (itemsCart.qtd || 0) + 1;
-    const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
-    storageReturn.push(itemsCart);
-    localStorage.setItem('cartItems', JSON.stringify(storageReturn));
-  } */
-
   handleChange = ({ target }) => {
     const { name } = target;
     const checkInputType = target.type === 'radio' ? target.id : target.value;
     this.setState({
       [name]: checkInputType,
     });
+  }
+
+  handleSaveButton = (event) => { // funcao removida do onChange
+    event.preventDefault();
     const {
       match: {
         params: { id },
@@ -69,12 +66,26 @@ class Details extends Component {
       email,
     });
     localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
+    window.location.reload(); // força atualizar pagina e limpar formulario
     // Aqui usa o json string e o outro pois precisa ser string salva no array
     // salvamos estes dados num objeto e salvamos no local storage, inicia vazio, depois push adiciona
   }
 
+  loadAvaliation = () => {
+    const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || []; // carrega dados do localStorage
+    const {
+      match: {
+        params: { id },
+      },
+    } = this.props; // traz props
+    const verificaID = avaliacoes.filter((aval) => aval.id === id); // filtrando dados do localStorage - renderizar apenas do produto
+    this.setState({
+      filtrarAvaliacao: verificaID,
+    });
+  }
+
   render() {
-    const { details, email, avaliacao, avalia } = this.state;
+    const { details, email, avaliacao, avalia, filtrarAvaliacao } = this.state;
     return (
       <div>
         <p>Detalhes</p>
@@ -102,7 +113,7 @@ class Details extends Component {
             Adicionar ao carrinho
           </button>
         </div>
-        <form>
+        <form onSubmit={ this.handleSaveButton }>
           <input
             placeholder="Email"
             type="email"
@@ -181,11 +192,23 @@ class Details extends Component {
             </label>
           </div>
           <div>
-            <button type="button" data-testid="submit-review-btn">
+            <button
+              type="submit"
+              data-testid="submit-review-btn"
+            >
               Avaliar
             </button>
           </div>
         </form>
+        <div>
+          { filtrarAvaliacao.map((elem, index) => ( // renderiza avaliação do produto filtrado
+            <ul key={ index }>
+              <p>
+                {`Email: ${elem.email} Comentário:${elem.avaliacao} Nota:${elem.avalia}`}
+              </p>
+            </ul>
+          ))}
+        </div>
       </div>
     );
   }
