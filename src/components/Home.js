@@ -8,10 +8,12 @@ class Home extends Component {
     super();
     this.state = {
       valorPesquisa: '',
-      listaDeProdutos: [],
+      id: '',
       cart: [],
       categorias: [],
       categories: [],
+      categoryClicked: false,
+      algoFoiPesquisado: false,
     };
   }
 
@@ -27,10 +29,27 @@ class Home extends Component {
   }
 
   retornoCategory = async ({ target }) => {
-    const category = await api.getProductsFromCategory(target.id);
+    const { valorPesquisa } = this.state;
+    const { id } = target;
+    const category = await api.getProductsFromCategoryAndQuery(id);
     this.setState({
-      categories: category.results,
+      algoFoiPesquisado: true,
     });
+
+    if (valorPesquisa.length === 0) {
+      this.setState({
+        categories: category.results,
+        id,
+        categoryClicked: true,
+      });
+    } else {
+      const categoryQuery = await api.getProductsFromCategoryAndQuery(id, valorPesquisa);
+      this.setState({
+        categories: categoryQuery.results,
+        id,
+        categoryClicked: true,
+      });
+    }
   }
 
   handleInput = ({ target }) => {
@@ -40,11 +59,22 @@ class Home extends Component {
   }
 
   handleClick = async () => {
-    const { valorPesquisa } = this.state;
-    const retornoFunc = await api.getProductsFromQuery(valorPesquisa);
+    const { valorPesquisa, id, categoryClicked } = this.state;
     this.setState({
-      listaDeProdutos: retornoFunc.results,
+      algoFoiPesquisado: true,
     });
+
+    if (categoryClicked) {
+      const returnFunc = await api.getProductsFromCategoryAndQuery(id, valorPesquisa);
+      this.setState({
+        categories: returnFunc.results,
+      });
+    } else {
+      const returnFuncId = await api.getProductsFromCategoryAndQuery(null, valorPesquisa);
+      this.setState({
+        categories: returnFuncId.results,
+      });
+    }
   }
 
   // saveButton = ({ target }) => {
@@ -74,7 +104,6 @@ class Home extends Component {
     } else {
       const { categories } = this.state;
       const produtos = categories.find((el) => el.id === target.name);
-      console.log('itens cart', produtos);
       produtos.qtd = 1;
       storageReturn.push(produtos);
       localStorage.setItem('cartItems', JSON.stringify(storageReturn));
@@ -82,7 +111,7 @@ class Home extends Component {
   }
 
   render() {
-    const { valorPesquisa, listaDeProdutos, categorias, categories, cart } = this.state;
+    const { valorPesquisa, categorias, categories, cart, algoFoiPesquisado } = this.state;
     const location = {
       pathname: '/cart',
       prop: cart,
@@ -123,16 +152,16 @@ class Home extends Component {
               id={ categoria.id }
               onClick={ this.retornoCategory }
             >
-              {categoria.name}
-            </button>))}
+              { categoria.name }
+            </button>)) }
           { categories.map((produtos) => (
             <div key={ produtos.id } data-testid="product">
               <p>
-                {produtos.title}
+                { produtos.title }
               </p>
               <img alt={ produtos.title } src={ produtos.thumbnail } />
               <p>
-                {`R$ ${produtos.price}`}
+                { `R$ ${produtos.price}` }
               </p>
               <Link
                 data-testid="product-detail-link"
@@ -149,9 +178,9 @@ class Home extends Component {
                 Adicionar ao carrinho
               </button>
             </div>
-          ))}
+          )) }
         </div>
-        <Card listaDeProdutos={ listaDeProdutos } />
+        <Card listaDeProdutos={ categories } algoFoiPesquisado={ algoFoiPesquisado } />
       </div>
     );
   }
