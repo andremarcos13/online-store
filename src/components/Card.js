@@ -4,10 +4,15 @@ import { Link } from 'react-router-dom';
 
 class Card extends Component {
   saveButton = ({ target }) => {
+    console.log('entrou');
     const { listaDeProdutos } = this.props;
     const itemsCart = listaDeProdutos.find((el) => el.id === target.name);
+    const newListadeProdutos = listaDeProdutos.filter((el) => el.id !== target.name);
+    console.log(newListadeProdutos);
     itemsCart.qtd = (itemsCart.qtd || 0) + 1;
     const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
+    console.log('listadeProdutos', listaDeProdutos);
+    console.log('storageReturn', storageReturn);
     storageReturn.push(itemsCart);
     localStorage.setItem('cartItems', JSON.stringify(storageReturn));
   }

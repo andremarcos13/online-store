@@ -47,13 +47,38 @@ class Home extends Component {
     });
   }
 
+  // saveButton = ({ target }) => {
+  //   console.log("entrou");
+  //   const { listaDeProdutos } = this.state;
+  //   const itemsCart = listaDeProdutos.find((el) => el.id === target.name);
+  //   const newListadeProdutos = listaDeProdutos.filter((el) => el.id !== target.name);
+  //   itemsCart.qtd = (itemsCart.qtd || 0) + 1;
+  //   const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
+  //   console.log("listadeProdutos", listaDeProdutos);
+  //   console.log("storageReturn", storageReturn);
+  //   storageReturn.push(itemsCart);
+  //   localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+  // }
+
+  // Essa funcao savebutton, fizemos primeiro o find ali pra achar o elemento, depois
+  // o if else... filter de que se achasse o elemento, adicionava mais uma unidade.
+  // Senão achasse, adicionava qtd 1.
   saveButton = async ({ target }) => {
-    const { categories } = this.state;
-    const itemsCart = categories.find((el) => el.id === target.name);
-    itemsCart.qtd = (itemsCart.qtd || 0) + 1;
     const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
-    storageReturn.push(itemsCart);
-    localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+    const itemsCart = storageReturn.find((el) => el.id === target.name);
+    if (itemsCart) {
+      const newStorageReturn = storageReturn.filter((el) => el.id !== target.name);
+      itemsCart.qtd += 1;
+      newStorageReturn.push(itemsCart);
+      localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+    } else {
+      const { categories } = this.state;
+      const produtos = categories.find((el) => el.id === target.name);
+      console.log('itens cart', produtos);
+      produtos.qtd = 1;
+      storageReturn.push(produtos);
+      localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+    }
   }
 
   render() {
