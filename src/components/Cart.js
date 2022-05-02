@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 
 class Cart extends Component {
   render() {
@@ -31,12 +30,4 @@ class Cart extends Component {
   }
 }
 
-Cart.propTypes = {
-  location: propTypes.shape({
-    prop: propTypes.arrayOf(propTypes.shape).isRequired,
-  }),
-};
-Cart.defaultProps = {
-  location: null,
-};
 export default Cart;

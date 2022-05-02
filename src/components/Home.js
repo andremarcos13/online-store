@@ -12,6 +12,7 @@ class Home extends Component {
       cart: [],
       categorias: [],
       categories: [],
+      listaDeProdutos: [],
       categoryClicked: false,
       algoFoiPesquisado: false,
     };
@@ -111,7 +112,13 @@ class Home extends Component {
   }
 
   render() {
-    const { valorPesquisa, categorias, categories, cart, algoFoiPesquisado } = this.state;
+    const {
+      valorPesquisa,
+      categorias,
+      categories,
+      cart,
+      algoFoiPesquisado,
+      listaDeProdutos } = this.state;
     const location = {
       pathname: '/cart',
       prop: cart,
@@ -180,7 +187,10 @@ class Home extends Component {
             </div>
           )) }
         </div>
-        <Card listaDeProdutos={ categories } algoFoiPesquisado={ algoFoiPesquisado } />
+        <Card
+          listaDeProdutos={ listaDeProdutos }
+          algoFoiPesquisado={ algoFoiPesquisado }
+        />
       </div>
     );
   }
