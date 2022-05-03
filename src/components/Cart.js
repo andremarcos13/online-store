@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 import ButtonCheckout from './ButtonCheckout';
 
 class Cart extends Component {
