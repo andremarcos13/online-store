@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Card from './Card';
 import * as api from '../services/api';
+import './Home.css';
 
 class Home extends Component {
   constructor() {
@@ -126,71 +127,81 @@ class Home extends Component {
 
     return (
       <div>
-        <input
-          data-testid="query-input"
-          type="text"
-          value={ valorPesquisa }
-          onChange={ this.handleInput }
-        />
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
-        <button
-          data-testid="query-button"
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Buscar
+        <div className="container">
+          <input
+            data-testid="query-input"
+            type="text"
+            value={ valorPesquisa }
+            onChange={ this.handleInput }
+            className="input-buscar"
+          />
+          <p data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </p>
+          <button
+            data-testid="query-button"
+            type="button"
+            onClick={ this.handleClick }
+            className="btn-buscar"
+          >
+            Buscar
 
-        </button>
-        <Link
-          data-testid="shopping-cart-button"
-          to={ location }
-        >
-          Carrinho de Compras
+          </button>
+          <Link
+            data-testid="shopping-cart-button"
+            to={ location }
+          >
+            Carrinho de Compras
 
-        </Link>
-        <div>
-          { categorias.map((categoria) => (
-            <button
-              data-testid="category"
-              type="button"
-              key={ categoria.name }
-              id={ categoria.id }
-              onClick={ this.retornoCategory }
-            >
-              { categoria.name }
-            </button>)) }
-          { categories.map((produtos) => (
-            <div key={ produtos.id } data-testid="product">
-              <p>
-                { produtos.title }
-              </p>
-              <img alt={ produtos.title } src={ produtos.thumbnail } />
-              <p>
-                { `R$ ${produtos.price}` }
-              </p>
-              <Link
-                data-testid="product-detail-link"
-                to={ { pathname: `/details/${produtos.id}`, state: { param1: cart } } }
-              >
-                Detalhes do Produto
-              </Link>
-              <button
-                type="button"
-                data-testid="product-add-to-cart"
-                onClick={ this.saveButton }
-                name={ produtos.id }
-              >
-                Adicionar ao carrinho
-              </button>
-            </div>
-          )) }
+          </Link>
         </div>
-        <Card
-          listaDeProdutos={ listaDeProdutos }
-          algoFoiPesquisado={ algoFoiPesquisado }
-        />
+        <div className="div-todona">
+          <div className="category-div">
+            { categorias.map((categoria) => (
+              <button
+                data-testid="category"
+                type="button"
+                key={ categoria.name }
+                id={ categoria.id }
+                onClick={ this.retornoCategory }
+              >
+                { categoria.name }
+              </button>)) }
+          </div>
+          <div className="div-produto">
+            { categories.map((produtos) => (
+              <div className="divinha" key={ produtos.id } data-testid="product">
+                <p>
+                  { produtos.title }
+                </p>
+                <img alt={ produtos.title } src={ produtos.thumbnail } />
+                <p>
+                  { `R$ ${produtos.price}` }
+                </p>
+                <Link
+                  data-testid="product-detail-link"
+                  to={ { pathname: `/details/${produtos.id}`, state: { param1: cart } } }
+                >
+                  Detalhes do Produto
+                </Link>
+                <button
+                  type="button"
+                  data-testid="product-add-to-cart"
+                  onClick={ this.saveButton }
+                  name={ produtos.id }
+                >
+                  Adicionar ao carrinho
+                </button>
+              </div>
+            )) }
+          </div>
+          {/* <div className="card-div">
+            <Card
+              listaDeProdutos={ listaDeProdutos }
+              algoFoiPesquisado={ algoFoiPesquisado }
+            />
+          </div> */}
+        </div>
       </div>
     );
   }
