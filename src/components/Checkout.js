@@ -14,7 +14,12 @@ class Checkout extends Component {
       number: '',
       city: '',
       state: '',
+      totalCompra: '',
     };
+  }
+
+  componentDidMount() {
+    this.reduceCalculator();
   }
 
   handleChange = ({ target }) => {
@@ -22,28 +27,35 @@ class Checkout extends Component {
     this.setState({ [name]: value });
   }
 
+  reduceCalculator = () => {
+    const storage = JSON.parse(localStorage.getItem('cartItems'));
+    const totalBuy = [];
+    storage.map((element) => (
+      totalBuy.push(element.qtd * element.price)
+    ));
+    const iniciaValor = 0;
+    const constSum = totalBuy
+      .reduce((prevValue, currentValue) => prevValue + currentValue, iniciaValor);
+
+    this.setState({
+      totalCompra: constSum,
+    });
+  }
+
   render() {
     const {
-      fullName,
-      cpf,
-      email,
-      phone,
-      cep,
-      address,
-      complement,
-      number,
-      city,
-      state,
+      fullName, cpf, email, phone, cep,
     } = this.state;
+    const { address, complement, number, city, state, totalCompra } = this.state;
     const storage = JSON.parse(localStorage.getItem('cartItems'));
-
+    console.log('estado map', totalCompra);
     return (
-      <div className="main-div">
+      <div className="checkout-div-products">
         <section className="review-product">
           <h2>Revise seus Produtos</h2>
           { storage.map((element) => (
             <div key={ element.id }>
-              <p data-testid="shopping-cart-product-name">
+              <p>
                 { element.title }
               </p>
               <img alt={ element.title } src={ element.thumbnail } />
@@ -51,9 +63,14 @@ class Checkout extends Component {
                 { `R$ ${element.price}` }
               </p>
               <div>
-                <p data-testid="shopping-cart-product-quantity">{ element.qtd }</p>
+                <p>{ element.qtd }</p>
+                <p> Total por item:</p>
+                <p>{ element.qtd * element.price }</p>
               </div>
             </div>))}
+          <h1>
+            { totalCompra }
+          </h1>
           {/* lista dos produtos adicionados ao carrinho */}
         </section>
         <section className="buyer-information">
