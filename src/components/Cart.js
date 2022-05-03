@@ -54,7 +54,7 @@ class Cart extends Component {
   }
 
   reduceCalculator = () => {
-    const storage = JSON.parse(localStorage.getItem('cartItems'));
+    const storage = JSON.parse(localStorage.getItem('cartItems')) || [];
     const totalBuy = [];
     storage.map((element) => (
       totalBuy.push(element.qtd * element.price)
@@ -74,7 +74,7 @@ class Cart extends Component {
     return (
       <div className="cart-component">
 
-        { storage === null
+        { storage === null || storage.length === 0
           ? (
             <p data-testid="shopping-cart-empty-message">
               Seu carrinho está vazio
