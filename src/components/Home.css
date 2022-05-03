@@ -37,7 +37,6 @@ button:hover {
 .btn-buscar {
   background-color:#b8c1ec;
   color: #232946;
-  /* height: 30px; */
   width: 30%;
   grid-area: botaoP;
 
