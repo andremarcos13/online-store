@@ -47,7 +47,6 @@ class Card extends Component {
 
     return (
       <div>
-        {/* { listaDeProdutos.length === 0 && algoFoiPesquisado ? nothingFound : retornoCard } */}
         { listaDeProdutos.length === 0 && algoFoiPesquisado ? retornoCard : nothingFound }
 
       </div>

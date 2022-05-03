@@ -150,6 +150,7 @@ class Home extends Component {
           <Link
             data-testid="shopping-cart-button"
             to={ location }
+            className="classe-link"
           >
             Carrinho de Compras
 
