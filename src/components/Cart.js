@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import ButtonCheckout from './ButtonCheckout';
 
 class Cart extends Component {
   render() {
@@ -28,7 +29,6 @@ class Cart extends Component {
               </div>
             ))
           )} */}
-
         { storage === null
           ? (
             <p data-testid="shopping-cart-empty-message">
@@ -49,6 +49,8 @@ class Cart extends Component {
               </div>
             ))
           ) }
+        <ButtonCheckout />
+
       </div>
     );
   }

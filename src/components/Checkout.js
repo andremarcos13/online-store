@@ -35,16 +35,25 @@ class Checkout extends Component {
       city,
       state,
     } = this.state;
+    const storage = JSON.parse(localStorage.getItem('cartItems'));
+
     return (
       <div className="main-div">
         <section className="review-product">
           <h2>Revise seus Produtos</h2>
-          <li>
-            Produto 1 - R$
-          </li>
-          <li>
-            Produto 2 - R$
-          </li>
+          { storage.map((element) => (
+            <div key={ element.id }>
+              <p data-testid="shopping-cart-product-name">
+                { element.title }
+              </p>
+              <img alt={ element.title } src={ element.thumbnail } />
+              <p>
+                { `R$ ${element.price}` }
+              </p>
+              <div>
+                <p data-testid="shopping-cart-product-quantity">{ element.qtd }</p>
+              </div>
+            </div>))}
           {/* lista dos produtos adicionados ao carrinho */}
         </section>
         <section className="buyer-information">
