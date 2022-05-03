@@ -10,8 +10,9 @@ class Details extends Component {
       details: [],
       email: '',
       avaliacao: '',
-      avalia: '', // alterado estado inicial para ''
+      avalia: 1, // alterado estado inicial para ''
       filtrarAvaliacao: [], // criado estado para renderizacao
+      caracteristicas: [],
     };
   }
 
@@ -27,9 +28,9 @@ class Details extends Component {
       },
     } = this.props;
     const retorno = await api.getProductById(id);
-    // console.log('retornoId', retorno);
     this.setState({
       details: retorno,
+      caracteristicas: retorno.attributes,
     });
   };
 
@@ -49,18 +50,16 @@ class Details extends Component {
     });
   };
 
-  handleSaveButton = () => {
-    // funcao removida do onChange
-    // remover event.preventDefault();
+  handleSaveButton = ({ target }) => {
     const {
       match: {
         params: { id },
       },
     } = this.props;
+    target.checked = true;
     const { avalia, avaliacao, email } = this.state;
     const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
-    avaliacoes.push({
-      // desestrutura e usa shorthand porque dei mesmo nome
+    avaliacoes.push({ // desestrutura e usa shorthand porque demos mesmo nome
       id,
       avalia,
       avaliacao,
@@ -71,12 +70,9 @@ class Details extends Component {
     this.setState({
       email: '',
       avaliacao: '',
-      avalia: '', // alterado estado inicial para ''
+      avalia: 1, // alterado estado inicial para ''
     });
     this.loadAvaliation();
-    // remover window.location.reload(); // força atualizar pagina e limpar formulario
-    // Aqui usa o json string e o outro pois precisa ser string salva no array
-    // salvamos estes dados num objeto e salvamos no local storage, inicia vazio, depois push adiciona
   };
 
   loadAvaliation = () => {
@@ -93,18 +89,24 @@ class Details extends Component {
   };
 
   render() {
-    const { details, email, avaliacao, avalia, filtrarAvaliacao } = this.state;
+    const { details, email, avaliacao, filtrarAvaliacao, caracteristicas } = this.state;
     return (
       <div>
-        <p>Detalhes</p>
-
+        <p>Detalhes do Produto</p>
         <Link data-testid="shopping-cart-button" to="/cart">
           Carrinho de Compras
         </Link>
-        <div key={ details.id }>
-          <p data-testid="product-detail-name">{details.title}</p>
+        <div>
+          <p data-testid="product-detail-name">{ details.title }</p>
           <img alt={ details.title } src={ details.thumbnail } />
-          <p>{`R$ ${details.price}`}</p>
+          <p>{ `R$ ${details.price}` }</p>
+          <p>Especificações Técnicas</p>
+          { caracteristicas.map((element, index) => (
+            <div key={ index }>
+              <p>{ `${element.name}: ${element.value_name}` }</p>
+            </div>
+          )) }
+
           <button
             type="button"
             data-testid="product-detail-add-to-cart"
@@ -136,57 +138,58 @@ class Details extends Component {
             </label>
           </div>
           <div>
-            <label htmlFor="1">
+            <label htmlFor="1" className="input">
               1
               <input
                 type="radio"
                 data-testid="1-rating"
                 id="1"
-                value={ avalia }
+                value="1"
                 name="avalia"
+                defaultChecked
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="2">
+            <label htmlFor="2" className="input">
               2
               <input
                 type="radio"
                 data-testid="2-rating"
                 id="2"
-                value={ avalia }
+                value="2"
                 name="avalia"
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="3">
+            <label htmlFor="3" className="input">
               3
               <input
                 type="radio"
                 data-testid="3-rating"
                 id="3"
-                value={ avalia }
+                value="3"
                 name="avalia"
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="4">
+            <label htmlFor="4" className="input">
               4
               <input
                 type="radio"
                 data-testid="4-rating"
                 id="4"
-                value={ avalia }
+                value="4"
                 name="avalia"
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="5">
+            <label htmlFor="5" className="input">
               5
               <input
                 type="radio"
                 data-testid="5-rating"
                 id="5"
-                value={ avalia }
+                value="5"
                 name="avalia"
                 onChange={ this.handleChange }
               />
@@ -204,23 +207,13 @@ class Details extends Component {
         </form>
         <div>
           <ul>
-            {filtrarAvaliacao.map(
-              (
-                elem,
-                index, // renderiza avaliação do produto filtrado
-              ) => (
-                <li key={ index }>
-                  <p>
-                    Email:
-                    <span>{elem.email}</span>
-                    Comentário:
-                    <span>{elem.avaliacao}</span>
-                    Nota:
-                    <span>{elem.avalia}</span>
-                  </p>
-                </li>
-              ),
-            )}
+            { filtrarAvaliacao.map((elem, index) => ( // renderiza avaliação do produto filtrado
+              <div key={ index }>
+                <p>{ elem.email }</p>
+                <p>{ elem.avaliacao }</p>
+                <p>{ elem.avalia }</p>
+              </div>
+            )) }
           </ul>
         </div>
       </div>
@@ -229,9 +222,15 @@ class Details extends Component {
 }
 
 Details.propTypes = {
-  match: PropTypes.string.isRequired,
-  params: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }),
+};
+
+Details.defaultProps = {
+  match: null,
 };
 
 export default Details;
