@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Card from './Card';
 import * as api from '../services/api';
 import './Home.css';
 
@@ -13,9 +12,6 @@ class Home extends Component {
       cart: [],
       categorias: [],
       categories: [],
-      listaDeProdutos: [],
-      categoryClicked: false,
-      algoFoiPesquisado: false,
     };
   }
 
@@ -34,9 +30,6 @@ class Home extends Component {
     const { valorPesquisa } = this.state;
     const { id } = target;
     const category = await api.getProductsFromCategoryAndQuery(id);
-    this.setState({
-      algoFoiPesquisado: true,
-    });
 
     if (valorPesquisa.length === 0) {
       this.setState({
@@ -62,9 +55,6 @@ class Home extends Component {
 
   handleClick = async () => {
     const { valorPesquisa, id, categoryClicked } = this.state;
-    this.setState({
-      algoFoiPesquisado: true,
-    });
 
     if (categoryClicked) {
       const returnFunc = await api.getProductsFromCategoryAndQuery(id, valorPesquisa);
@@ -117,9 +107,7 @@ class Home extends Component {
       valorPesquisa,
       categorias,
       categories,
-      cart,
-      algoFoiPesquisado,
-      listaDeProdutos } = this.state;
+      cart } = this.state;
     const location = {
       pathname: '/cart',
       prop: cart,

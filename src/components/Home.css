@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@400&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@400&display=swap') ;
 
 * {
-    font-family: Oxygen;
-}
+  font-family: Oxygen;
+} */
 
 body {
   background-color: #232946;
@@ -16,42 +16,39 @@ button {
   border: 1px solid #121629;
   border-radius: 5px;
   color: #fffffe;
-  height: 50px;
   cursor: pointer;
-  
+  height: 50px;
 }
 
 button:hover {
   background-color: #eebbc3;
-  color: black;
   border: none;
+  color: black;
 }
 
-.input-buscar{
-  /* width: 60%;
-  height: 35px; */
+.input-buscar {
   border-radius: 8px;
   grid-area: input;
 }
 
 .btn-buscar {
-  background-color:#b8c1ec;
+  background-color: #b8c1ec;
   color: #232946;
-  width: 30%;
   grid-area: botaoP;
+  width: 30%;
 
 }
 
 .classe-link {
-    grid-area: carrinho;
+  grid-area: carrinho;
 }
 
 .category-div {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 200px;
   grid-area: categoria;
+  width: 200px;
 }
 
 .div-todona {
@@ -60,28 +57,28 @@ button:hover {
 }
 
 .div-produto {
-  grid-area: produtos;
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  grid-area: produtos;
 }
 
 .divinha {
-    border: solid 3px #121629;
-    width: 300px;
-    height: 450px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  align-items: center;
+  border: solid 3px #121629;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  justify-content: center;
+  width: 300px;
 }
 
 img {
-    width: 150px;
-    height: 150px;
+  height: 150px;
+  width: 150px;
 }
 
 .container {
-    display: grid;
-    grid: 'ok input botaoP carrinho' 1fr 2fr 1fr 1fr;
+  display: grid;
+  grid: 'ok input botaoP carrinho' 1fr 2fr 1fr 1fr;
 }
