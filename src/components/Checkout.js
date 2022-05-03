@@ -44,18 +44,9 @@ class Checkout extends Component {
 
   render() {
     const {
-      fullName,
-      cpf,
-      email,
-      phone,
-      cep,
-      address,
-      complement,
-      number,
-      city,
-      state,
-      totalCompra,
+      fullName, cpf, email, phone, cep,
     } = this.state;
+    const { address, complement, number, city, state, totalCompra } = this.state;
     const storage = JSON.parse(localStorage.getItem('cartItems'));
     console.log('estado map', totalCompra);
     return (
