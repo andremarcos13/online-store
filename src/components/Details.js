@@ -34,13 +34,21 @@ class Details extends Component {
     });
   };
 
-  saveButton = () => {
+  saveButton = async () => {
     const { details } = this.state;
-    details.qtd = (details.qtd || 0) + 1;
     const storageReturn = JSON.parse(localStorage.getItem('cartItems')) || [];
-    storageReturn.push(details);
-    localStorage.setItem('cartItems', JSON.stringify(storageReturn));
-  };
+    const itemsCart = storageReturn.find((el) => el.id === details.id);
+    if (itemsCart) {
+      // const newStorageReturn = storageReturn.filter((el) => el.id !== details.name);
+      itemsCart.qtd += 1;
+      // newStorageReturn.push(itemsCart);
+      localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+    } else {
+      details.qtd = (details.qtd || 0) + 1;
+      storageReturn.push(details);
+      localStorage.setItem('cartItems', JSON.stringify(storageReturn));
+    }
+  }
 
   handleChange = ({ target }) => {
     const { name } = target;

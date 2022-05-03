@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
+import ButtonCheckout from './ButtonCheckout';
 
 class Cart extends Component {
   render() {
     const storage = JSON.parse(localStorage.getItem('cartItems'));
     return (
       <div className="cart-component">
+
         { storage === null
           ? (
             <p data-testid="shopping-cart-empty-message">
@@ -25,6 +28,8 @@ class Cart extends Component {
               </div>
             ))
           ) }
+        <ButtonCheckout />
+
       </div>
     );
   }
